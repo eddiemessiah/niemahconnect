@@ -3,21 +3,24 @@ import { GoogleGenAI } from "@google/genai";
 
 const API_KEY = process.env.API_KEY || "";
 
-export const sendMessageToNiyahBot = async (prompt: string, history: { role: 'user' | 'model', text: string }[]) => {
+export const sendMessageToNiyahBot = async (prompt: string, history: any[]) => {
   try {
     const ai = new GoogleGenAI({ apiKey: API_KEY });
     const chat = ai.chats.create({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-3-pro-preview',
       config: {
-        systemInstruction: `You are "Niyah Bot", a friendly and encouraging AI tutor for women and girls in Africa and Latin America. 
-        Your goal is to help them learn technology (coding, blockchain, design) and provide mentorship. 
-        Keep your tone supportive, use simple language, and provide examples relevant to their contexts (e.g., using local currencies or business scenarios). 
-        You are part of the Niemah platform. If asked about the platform, explain that Niemah democratizes access to tech education.`,
+        systemInstruction: `You are "Niyah Bot", a world-class mentor for women in Africa and Latin America. 
+        Context: The user is on the Niemah Platform.
+        Goals: 
+        1. Explain tech concepts (Web3, AI, Design) simply.
+        2. Provide career encouragement.
+        3. Help with specific coding/blockchain challenges.
+        Tone: Empathetic, expert, sisterly, and highly encouraging. 
+        If asked about technical implementation, provide code snippets. 
+        If asked about the platform, explain Niyah Points and Learn-to-Earn mechanics.`,
       },
     });
 
-    // Note: We're using chat.sendMessage for simplicity here, but in a real app we'd pass history
-    // Since we're initiating a new chat instance in this mock, we can just send the current message
     const response = await chat.sendMessage({ message: prompt });
     return response.text;
   } catch (error) {

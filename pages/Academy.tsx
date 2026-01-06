@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { COURSES } from '../constants';
 import { 
   MagnifyingGlassIcon, 
-  FunnelIcon,
   PlayCircleIcon,
   BookOpenIcon,
   AcademicCapIcon,
-  CheckBadgeIcon
+  CheckBadgeIcon,
+  SparklesIcon,
+  CloudArrowDownIcon
 } from '@heroicons/react/24/outline';
 
 const Academy: React.FC<{ onEarnPoints: (amount: number) => void }> = ({ onEarnPoints }) => {
   const [filter, setFilter] = useState('All');
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const categories = ['All', 'Coding', 'Blockchain', 'Design', 'Soft Skills'];
 
   const filteredCourses = filter === 'All' 
@@ -23,12 +25,12 @@ const Academy: React.FC<{ onEarnPoints: (amount: number) => void }> = ({ onEarnP
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Niyah Academy</h2>
-          <p className="text-gray-600 max-w-xl">Gamified, bite-sized courses designed for the future tech leaders of Africa and Latin America.</p>
+          <p className="text-gray-600 max-w-xl">Gamified, bite-sized courses. Complete challenges, earn points, and mint your verifiable SBT certificates.</p>
         </div>
-        <div className="flex items-center gap-2 bg-white border border-gray-100 p-2 rounded-2xl shadow-sm">
+        <div className="flex gap-3">
           <div className="bg-teal-50 text-teal-600 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2">
             <CheckBadgeIcon className="w-5 h-5" />
-            2 Courses Completed
+            2 Verified SBTs
           </div>
         </div>
       </header>
@@ -60,6 +62,32 @@ const Academy: React.FC<{ onEarnPoints: (amount: number) => void }> = ({ onEarnP
         </div>
       </div>
 
+      {/* Interactive Active Learning Card (Next Level Feature) */}
+      <div className="bg-gradient-to-r from-orange-600 to-rose-600 rounded-[2.5rem] p-8 text-white flex flex-col md:flex-row items-center gap-8 shadow-2xl shadow-orange-100">
+        <div className="flex-1 space-y-4">
+          <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            <SparklesIcon className="w-4 h-4" />
+            Active Challenge
+          </div>
+          <h3 className="text-3xl font-black">Ready for your first Solidity Test?</h3>
+          <p className="text-orange-100 opacity-90 max-w-md">Complete this 2-minute quiz to earn 100 bonus points and your "Blockchain Pioneer" badge.</p>
+          <div className="flex gap-4 pt-2">
+            <button className="bg-white text-orange-600 px-8 py-3 rounded-2xl font-bold shadow-lg hover:bg-orange-50 transition-colors">
+              Start Quiz
+            </button>
+            <button className="flex items-center gap-2 text-white font-bold hover:underline">
+              <CloudArrowDownIcon className="w-5 h-5" />
+              Download for Offline
+            </button>
+          </div>
+        </div>
+        <div className="w-48 h-48 bg-white/10 rounded-full flex items-center justify-center border-4 border-white/20 animate-pulse">
+           <div className="w-32 h-32 bg-white rounded-3xl flex items-center justify-center text-orange-600 shadow-2xl">
+              <AcademicCapIcon className="w-16 h-16" />
+           </div>
+        </div>
+      </div>
+
       {/* Course Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredCourses.map(course => (
@@ -68,17 +96,6 @@ const Academy: React.FC<{ onEarnPoints: (amount: number) => void }> = ({ onEarnP
               <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-black text-orange-600 uppercase">
                 {course.level}
-              </div>
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <button 
-                  onClick={() => {
-                    alert(`Started ${course.title}! You'll earn ${course.points} points upon completion.`);
-                    onEarnPoints(10); // Small bonus for starting
-                  }}
-                  className="bg-white text-gray-900 p-4 rounded-full transform scale-50 group-hover:scale-100 transition-transform duration-300 shadow-xl"
-                >
-                  <PlayCircleIcon className="w-8 h-8" />
-                </button>
               </div>
             </div>
             <div className="p-6 flex-1 flex flex-col">
@@ -94,38 +111,22 @@ const Academy: React.FC<{ onEarnPoints: (amount: number) => void }> = ({ onEarnP
                       <BookOpenIcon className="w-4 h-4" />
                       {course.modules} Modules
                    </div>
-                   <div className="flex items-center gap-1">
-                      <AcademicCapIcon className="w-4 h-4" />
-                      {course.duration}
+                   <div className="flex items-center gap-1 font-bold text-teal-600">
+                      Earn {course.points} pts
                    </div>
                 </div>
                 
-                <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
-                      <span className="text-orange-600 font-bold text-xs">+{course.points}</span>
-                    </div>
-                    <span className="text-xs text-gray-500">Points available</span>
-                  </div>
-                  <button className="text-orange-600 font-bold text-sm hover:translate-x-1 transition-transform flex items-center gap-1">
-                    Start Learning →
-                  </button>
-                </div>
+                <button 
+                  onClick={() => onEarnPoints(5)}
+                  className="w-full bg-gray-50 group-hover:bg-orange-600 group-hover:text-white text-gray-900 py-3 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2"
+                >
+                  <PlayCircleIcon className="w-5 h-5" />
+                  Continue Module
+                </button>
               </div>
             </div>
           </div>
         ))}
-      </div>
-      
-      {/* Offline Mode Indicator */}
-      <div className="bg-blue-600 rounded-3xl p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-blue-100">
-        <div className="space-y-2 text-center md:text-left">
-          <h3 className="text-2xl font-bold">Traveling or low on data?</h3>
-          <p className="text-blue-100">Download your course modules and learn offline. We'll sync your points when you're back online!</p>
-        </div>
-        <button className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 transition-colors whitespace-nowrap shadow-lg">
-          Enable Offline Mode
-        </button>
       </div>
     </div>
   );
