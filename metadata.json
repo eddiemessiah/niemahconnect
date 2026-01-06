@@ -1,0 +1,8 @@
+{
+  "name": "Niemah - Empowering Women in Tech",
+  "description": "A mobile-first educational platform and social network democratizing tech and blockchain education for women and girls in Africa and Latin America.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
